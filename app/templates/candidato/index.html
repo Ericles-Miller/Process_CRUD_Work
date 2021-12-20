@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Renomear depois{% endblock title %}
+
+
+{% block content %}
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+<table>
+    <tr>
+      <th>Nome </th>
+      <th>Email</th>
+      <th>CPF</th>
+      <th>Pretenção Salarial </th>
+      <th>Disponibilidade de Trabalho</th>
+      <th>Idade</th>
+      <th>Ações</th>
+    
+    </tr>
+    <tr>
+      <td>Ericles Miller </td>
+      <td>email@gmail.com</td>
+      <td>130984325</td>
+      <td> R$ 25000</td>
+      <td> Disponível</td>
+      <td>24</td>
+      <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button type="button" href="#" class="btn btn-danger">Excluir</button>
+        <a role="button" href="{% url 'editar' %}" class="btn btn-warning">Editar</button>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Centro comercial Moctezuma</td>
+      <td>Francisco Chang</td>
+      <td>Mexico</td>
+      <td>Alfreds Futterkiste</td>
+      <td>Maria Anders</td>
+      <td>Germany</td>
+      <td>Alterar | Excluir</td>
+    </tr>
+  </table>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
