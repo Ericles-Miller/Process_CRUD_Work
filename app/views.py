@@ -10,8 +10,11 @@ def inicio(request):
     return render(request, 'boasVindas.html')   
 
 def cadastro(request):
-    form = CandidatosForm(request.POST or None)
-    return render(request, 'candidato/cadastro.html')
+    form = CandidatosForm(request.POST or None, request.Files or None)
+    if form.is_valid():
+        form.save()
+        return redirect('cadastro')
+    return render(request, 'candidato/cadastro.html', {'form':form})
 
 def candidato(request):
     candidato = Candidatos.objects.all()

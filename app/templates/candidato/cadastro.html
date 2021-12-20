@@ -4,6 +4,9 @@
 
 {% block content %} 
 
+<form enctype="multipart/form-data" method="post" action="form-c">
+{% crsf_token %}
+
 <div class="input-group mb-3">
     <span class="input-group-text" id="basic-addon1">Seu Nome Completo</span>
     <input type="text" class="form-control" placeholder="Name User" aria-label="Username" aria-describedby="basic-addon1">
@@ -28,7 +31,7 @@
   </div>
   
   <div class="input-group mb-3">
-    <span class="input-group-text">@</span>
+    <span class="input-group-text">email</span>
     <input type="text" class="form-control" placeholder="exemplo@servidor.com" aria-label="Username">
   </div>
   
@@ -45,6 +48,6 @@
       Sim
     </label>
   </div>
-  
+</form>
 
 {% endblock content %}
