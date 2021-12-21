@@ -43,8 +43,8 @@
       <td>{{candidato.disp_trab_imed}}</td>
       <td>{{candidato.idade}}</td>
       <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <button type="button" href="#" class="btn btn-danger">Excluir</button>
-        <a role="button" href="{% url 'editar' %}" class="btn btn-warning">Editar</button>
+        <a role="button" href="{% url 'excluir' candidato.id %}" class="btn btn-danger">Excluir</button></a>
+        <a role="button" href="{% url 'editar' %}" class="btn btn-warning">Editar</button></a>
       </div>
       </td>
     </tr>

@@ -10,11 +10,32 @@ def inicio(request):
     return render(request, 'boasVindas.html')   
 
 def cadastro(request):
-    form = CandidatosForm(request.POST or None, request.Files or None)
-    if form.is_valid():
-        form.save()
-        return redirect('cadastro')
-    return render(request, 'candidato/cadastro.html', {'form':form})
+    #formulario = CandidatosForm(request.POST)
+    #return render(request, 'candidato/cadastro.html', {'formulario':formulario})
+    if request.method == 'GET':
+        user = Candidatos.objects.all()
+
+        form = CandidatosForm()
+
+        context = {
+            'user': user,
+            'form': form,
+        }
+        return render(request, 'candidato/cadastro.html', context)
+    elif request.method == 'POST':
+        form = CandidatosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'candidato/index.html')
+        else: 
+            user = Candidatos.objects.all()
+
+            context = {
+                'user': user,
+                'form': form,
+            }
+            return render(request, 'candidato/cadastro.html', context)
+    #return render(request, 'candidato/cadastro.html', {'form':form})
 
 def candidato(request):
     candidato = Candidatos.objects.all()
@@ -24,3 +45,7 @@ def candidato(request):
 def candidato_editar(request):
     return render(request, 'candidato/editar_cadastro.html')
 
+def excluir(request, id):
+    user = Candidatos.objects.get(id=id)
+    user.delete()
+    return redirect('candidato')
