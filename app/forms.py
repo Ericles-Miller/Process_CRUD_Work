@@ -2,5 +2,6 @@ from django import forms
 from .models import Candidatos
 
 class CandidatosForm(forms.ModelForm):
-    model = Candidatos
-    fields = '__all__'
+    class Meta:
+        model = Candidatos
+        fields = '__all__'

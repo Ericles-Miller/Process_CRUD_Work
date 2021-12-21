@@ -2,25 +2,15 @@ from django.db import models
 
 # Create your models here.
 class Candidatos(models.Model):
-    nome = models.CharField(max_length = 100 , null=False)
-    cpf  = models.IntegerField(max_length= 11, null=False)
-    email= models.CharField(max_length = 100, null= False)
-    pret_salarial = models.FloatField(null=False)
-    disp_trab_imed= models.CharField(max_length=10,null=False)
-    idade = models.DateTimeField( null= False ) #verificar se esta certo 
+    nome = models.CharField(max_length = 100 , null=False, verbose_name='nome')
+    cpf  = models.CharField(max_length = 11, null = False, unique = True, verbose_name='cpf')
+    email= models.EmailField(max_length = 100, null = False, unique = True, verbose_name='email')
+    pret_salarial = models.FloatField(null=False , verbose_name='pret_salarial')
+    disp_trab_imed= models.BooleanField( null=False, verbose_name='disp_trab_imed')
+    idade = models.DateField( auto_now=False, null= False, verbose_name='idade' ) #verificar se esta certo 
 
     def __str__(self):
-        lista = list()
-        dic = dict()
-        dic['nome'] = self.nome
-        dic['cpf'] = self.cpf
-        dic['email'] = self.email
-        dic['pret_salarial'] = self.pret_salarial
-        dic['disp_trab_imed'] = self.disp_trab_imed
-        dic['idade'] = self.idade
-
-        lista.append(dic)
-        print(lista)
+        return self.nome
         #lista = 'Nome:' + self.nome + "-" + 'cpf:' + self.cpf + '-' + 'email:' + self.email + '-' + 'pretencao salarial:' + self.pret_salarial + '-' + 'disponibilidade de Trabalho' + self.disp_trab_imed +  '-' + 'idade' + self.idade
 
     def delete(self, using=None, keep_parents= False):
