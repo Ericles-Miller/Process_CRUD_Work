@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Renomear depois{% endblock title %}
+{% block title %}Listar Candidatos {% endblock title %}
 
 
 {% block content %}
@@ -33,18 +33,18 @@
       <th>Ações</th>
     
     </tr>
-    {% for candidato in candidato %}
+    {% for candidatos in candidato %}
     <tr>
-      <td>{{candidato.id}}</td>
-      <td>{{candidato.nome}} </td>
-      <td>{{candidato.email}}</td>
-      <td>{{candidato.cpf}}</td>
-      <td>{{candidato.pret_salarial}}</td>
-      <td>{{candidato.disp_trab_imed}}</td>
-      <td>{{candidato.idade}}</td>
+      <td>{{candidatos.id}}</td>
+      <td>{{candidatos.nome}} </td>
+      <td>{{candidatos.email}}</td>
+      <td>{{candidatos.cpf}}</td>
+      <td>{{candidatos.pret_salarial}}</td>
+      <td>{{candidatos.disp_trab_imed}}</td>
+      <td>{{candidatos.idade}}</td>
       <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <a role="button" href="{% url 'excluir' candidato.id %}" class="btn btn-danger">Excluir</button></a>
-        <a role="button" href="{% url 'editar'  candidato.id %}" class="btn btn-warning">Editar</button></a>
+        <a role="button" href="{% url 'excluir' candidatos.id %}" class="btn btn-danger">Excluir</button></a>
+        <a role="button" href="{% url 'editar'  candidatos.id %}" class="btn btn-warning">Editar</button></a>
       </div>
       </td>
     </tr>
