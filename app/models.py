@@ -13,10 +13,10 @@ class Candidatos(models.Model):
         return self.nome
         #lista = 'Nome:' + self.nome + "-" + 'cpf:' + self.cpf + '-' + 'email:' + self.email + '-' + 'pretencao salarial:' + self.pret_salarial + '-' + 'disponibilidade de Trabalho' + self.disp_trab_imed +  '-' + 'idade' + self.idade
 
-    def delete(self, using=None, keep_parents= False):
+    '''def delete(self, using=None, keep_parents= False):
         self.nome.storage.delete(self.nome.name)
         self.cpf.storage.delete(self.cpf.name)
         self.email.storage.delete(self.email.name)
         self.pret_salarial.storage.delete(self.pret_salarial.name)
         self.disp_trab_imed.storage.delete(self.disp_trab_imed.name)
-        self.idade.storage.delete(self.idade.name)
+        self.idade.storage.delete(self.idade.name)'''
