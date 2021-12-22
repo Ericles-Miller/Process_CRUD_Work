@@ -1,24 +1,18 @@
 {% extends 'base.html' %}
     
-{% block title %} Cadastro Candidatos {% endblock title %} 
+{% block title %} Editar Candidatos {% endblock title %} 
 
 {% block content %} 
 
-{% for campo in formulario %}
-
-    <div class="mb-3">
-      <label for="" class="form-label"> {{campo.label}}:</label>
-      <input 
-        type="{{campo.field.widget.input_type}}"
-        class="form-control"
-        name="{{campo.name}}"
-        id=""
-        aria-describedat="helpID"
-        placeholder="{{campo.label}}"
-        value="{{campo.value}}">
+<div class="card">
+    <div class="card-header">Editar Candidato</div>
+    <div class="card-body">
+      <h4 class="card-title">Dados do Candidato</h4>
+  
+      {% include 'candidato/form.html' %}
+  
     </div>
-    <div class="col-12 help-text">{{campo.erros}}</div>
-  {% endfor %}
-  <button type="submit" value="Cadastrar dados"  class="btn btn-success">Cadastrar</button>
+    <div class="card-footer text-muted"></div>
+  </div>
 
 {% endblock content %}
