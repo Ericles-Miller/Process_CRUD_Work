@@ -20,6 +20,7 @@ class ValidForm(forms.Form):
         if a == True:
 
             if not Candidatos.objects.filter(cpf = _cpf):
+                Candidatos.objects.AlterField(cpf)
                 return _cpf
             else: 
                 raise ValidationError("O cpf inserido é inválido ou já existe!")
