@@ -45,7 +45,6 @@ def cadastro(request):
 
 
 def candidato(request):
-
     parametro_page = request.GET.get('page', '1')
     parametro_limit= request.GET.get('limit', '5')
 
@@ -53,6 +52,12 @@ def candidato(request):
         parametro_limit = '5'
 
     candidato = Candidatos.objects.all()
+    search = request.GET.get('search')
+    print(search)
+    if search:
+        candidato = Candidatos.objects.filter(cpf=search)
+        context = {'candidato': candidato}
+        return render(request, 'candidato/index.html', context)
 
     candidato_paginator = Paginator(candidato,parametro_limit)
 
@@ -63,12 +68,9 @@ def candidato(request):
         page = candidato_paginator.page(1)
 
     context = {
-        'candidato' : page
+        'candidato' : page,
     }
     return render(request, 'candidato/index.html', context  )
-
-
-
 
 
 def candidato_editar(request, id):
@@ -106,29 +108,3 @@ def excluir(request, id):
 
 
 
-'''if request.method == 'GET':
-        usuario = Candidatos.objects.all()
-        user = Candidatos.objects.filter(id=id).first()
-        form = CandidatosForm(instance = user)
-        
-        context = {
-            'users':user,
-            'form': form,
-        }
-        return redirect('cadastro')
-
-    elif request.method == 'POST':
-        user = Candidatos.objects.filter(id=id).first()
-        form = CandidatosForm(request.POST, instance = user)
-
-        if form.is_valid():
-            form.save()
-            return redirect('index_candidato')
-
-        else:
-            user = Candidatos.objects.all()
-            context = {
-            'users':user,
-            'form': form,
-            }
-            return render(request, 'candidato/editar_cadastro.html')'''
