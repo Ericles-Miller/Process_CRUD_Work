@@ -10,40 +10,35 @@ def inicio(request):
     return render(request, 'boasVindas.html')   
 
 def cadastro(request):
+   
 
-    #formulario = CandidatosForm(request.POST)
-    #return render(request, 'candidato/cadastro.html', {'formulario':formulario})
     if request.method == 'GET':
         user = Candidatos.objects.all()
 
         form = ValidForm()
-
+        #form2= CandidatosForm()
         context = {
             'form': form,
-            'user': user
+            'user': user,
         }
-        return render(request, 'candidato/cadastro.html', context = context)
+        return render(request, 'candidato/cadastro.html', context=context)
     
     else:
         form2 = CandidatosForm(request.POST)
         form = ValidForm(request.POST)
-        if form2.is_valid() and form.is_valid():
-           
 
-            for k, v in form.cleaned_data.items():
-                print(f"{k}:{v}")
-            print('---------------')    
+        if form2.is_valid():    
             form = ValidForm()
             form2.save()
             return redirect('index_candidato')
         else: 
             user = Candidatos.objects.all()
-
             context = {
                 'form': form,
                 'user': user,
+                'form2': form2,
             }
-            return render(request, 'candidato/cadastro.html', context)
+            return render(request, 'candidato/cadastro.html', context = context)
 
 
     '''formulario = CandidatosForm(request.POST)
