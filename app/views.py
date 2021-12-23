@@ -3,20 +3,56 @@ from django.http import HttpResponse
 # -- import models
 from .models import Candidatos 
 #import forms para cadastro
-from .forms import CandidatosForm
+from .forms import CandidatosForm, ValidForm
 
 
 def inicio(request):
     return render(request, 'boasVindas.html')   
 
 def cadastro(request):
-    formulario = CandidatosForm(request.POST)
 
+    #formulario = CandidatosForm(request.POST)
+    #return render(request, 'candidato/cadastro.html', {'formulario':formulario})
+    if request.method == 'GET':
+        user = Candidatos.objects.all()
+
+        form = ValidForm()
+
+        context = {
+            'form': form,
+            'user': user
+        }
+        return render(request, 'candidato/cadastro.html', context = context)
+    
+    else:
+        form2 = CandidatosForm(request.POST)
+        form = ValidForm(request.POST)
+        if form2.is_valid() and form.is_valid():
+           
+
+            for k, v in form.cleaned_data.items():
+                print(f"{k}:{v}")
+            print('---------------')    
+            form = ValidForm()
+            form2.save()
+            return redirect('index_candidato')
+        else: 
+            user = Candidatos.objects.all()
+
+            context = {
+                'form': form,
+                'user': user,
+            }
+            return render(request, 'candidato/cadastro.html', context)
+
+
+    '''formulario = CandidatosForm(request.POST)
+    formulario = 
     if formulario.is_valid():
         formulario.save()
         return redirect('index_candidato')
 
-    return render(request, 'candidato/cadastro.html', {'formulario':formulario})
+    return render(request, 'candidato/cadastro.html', {'formulario':formulario})'''
 
 
 def candidato(request):
