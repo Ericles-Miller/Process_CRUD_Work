@@ -45,14 +45,29 @@ def cadastro(request):
 
 
 def candidato(request):
-
     parametro_page = request.GET.get('page', '1')
     parametro_limit= request.GET.get('limit', '5')
+
+    '''template_name = 'candidato/index.html'
+    candidato = Candidatos.objects.all()
+    search = request.GET.get('search')
+    if search:
+        candidato = candidato.filter(cpf__icontains=search)
+    context = {'candidato': candidato}
+    return render(request, template_name, context)'''
+
+
 
     if not (parametro_limit.isdigit() and int(parametro_limit) > 0):
         parametro_limit = '5'
 
     candidato = Candidatos.objects.all()
+    search = request.GET.get('search')
+    print(search)
+    if search:
+        candidato = Candidatos.objects.filter(cpf=search)
+        context = {'candidato': candidato}
+        return render(request, 'candidato/index.html', context)
 
     candidato_paginator = Paginator(candidato,parametro_limit)
 
@@ -63,10 +78,19 @@ def candidato(request):
         page = candidato_paginator.page(1)
 
     context = {
-        'candidato' : page
+        'candidato' : page,
     }
     return render(request, 'candidato/index.html', context  )
 
+
+def candidato_filter(request):
+    template_name = 'candidato/index.html'
+    candidato = Candidatos.objects.all()
+    search = request.GET.get('search')
+    if search:
+        candidato = candidato.filter(cpf__icontains=search)
+    context = {'candidato': candidato}
+    return render(request, template_name, context)
 
 
 

@@ -62,11 +62,18 @@
       </ul>
     </nav>
   </div>
+  
+  <div class="input-group">
+      <form action="." method="GET" class="form-inline">
+        <input type="text" id="search" name="search" class="form-control" placeholder="Busca">
+        <input type="submit" class="btn btn-primary" value="OK">
+      </form>
+  </div>
 
 
 <table>
     <tr>
-      <th>ID</th>
+      <th>ID</th> 
       <th>Nome </th>
       <th>Email</th>
       <th>CPF</th>
@@ -94,6 +101,7 @@
     
     {% endfor %}
     
+  </div>  
   </table>
   
 {% endblock %}
