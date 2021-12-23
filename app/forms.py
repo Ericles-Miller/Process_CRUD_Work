@@ -18,11 +18,18 @@ class ValidForm(forms.Form):
         a = validar_cpf(_cpf)
 
         if a == True:
-            return _cpf
-        else: 
-            raise ValidationError("O cpf inserido é inválido!")
+
+            if not Candidatos.objects.filter(cpf = _cpf):
+                return _cpf
+            else: 
+                raise ValidationError("O cpf inserido é inválido ou já existe!")
     
-    
+    def clean_email(self):
+        _email = self.cleaned_data['email']
+        if not Candidatos.objects.filter(email=_email):
+            return _email
+        else:
+            raise ValidationError('O email ja foi cadastrado por outro usuário')
 
 def validar_cpf(numbers):
         #  Obtém os números do CPF e ignora outros caracteres
