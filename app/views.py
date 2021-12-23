@@ -5,6 +5,8 @@ from .models import Candidatos
 #import forms para cadastro
 from .forms import CandidatosForm, ValidForm
 
+#paginacao 
+from django.core.paginator import Paginator
 
 def inicio(request):
     return render(request, 'boasVindas.html')   
@@ -41,19 +43,33 @@ def cadastro(request):
             return render(request, 'candidato/cadastro.html', context = context)
 
 
-    '''formulario = CandidatosForm(request.POST)
-    formulario = 
-    if formulario.is_valid():
-        formulario.save()
-        return redirect('index_candidato')
-
-    return render(request, 'candidato/cadastro.html', {'formulario':formulario})'''
-
 
 def candidato(request):
+
+    parametro_page = request.GET.get('page', '1')
+    parametro_limit= request.GET.get('limit', '5')
+
+    if not (parametro_limit.isdigit() and int(parametro_limit) > 0):
+        parametro_limit = '5'
+
     candidato = Candidatos.objects.all()
-    #print(candidato)
-    return render(request, 'candidato/index.html' , {'candidato': candidato})
+
+    candidato_paginator = Paginator(candidato,parametro_limit)
+
+    try:
+        page = candidato_paginator.page(parametro_page)
+
+    except(EmptyPage,PageNotAnInteger):
+        page = candidato_paginator.page(1)
+
+    context = {
+        'candidato' : page
+    }
+    return render(request, 'candidato/index.html', context  )
+
+
+
+
 
 def candidato_editar(request, id):
     
