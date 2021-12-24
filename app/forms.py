@@ -4,12 +4,14 @@ from django.core.validators import MinValueValidator
 from random import randint
 from django.forms import ValidationError
 
+#choices_p=((True, 'Sim'), (False, 'Não'))
+
 class ValidForm(forms.Form):
     nome = forms.CharField(max_length = 100 )
     cpf  = forms.CharField(max_length = 11)
     email= forms.EmailField(max_length = 100)
     pret_salarial = forms.FloatField()
-    disp_trab_imed= forms.BooleanField()
+    disp_trab_imed= forms.CharField(max_length=1)
     idade = forms.IntegerField(validators=[MinValueValidator(18)] ) #verificar se esta certo
 
     def clean_cpf(self):
@@ -20,7 +22,7 @@ class ValidForm(forms.Form):
         if a == True:
 
             if not Candidatos.objects.filter(cpf = _cpf):
-                Candidatos.objects.AlterField(cpf)
+                #Candidatos.objects.AlterField(cpf)
                 return _cpf
             else: 
                 raise ValidationError("O cpf inserido é inválido ou já existe!")
@@ -31,6 +33,23 @@ class ValidForm(forms.Form):
             return _email
         else:
             raise ValidationError('O email ja foi cadastrado por outro usuário')
+
+    def clean_disp_trab_imed(self):
+        _disp_trab_imed = self.cleaned_data['disp_trab_imed']
+        print(_disp_trab_imed)
+        
+        if _disp_trab_imed == 'S' or _disp_trab_imed == 's' or _disp_trab_imed == 'n' or _disp_trab_imed == 'N':
+            if _disp_trab_imed == 's' or _disp_trab_imed == 'S':
+                _disp_trab_imed = 'Sim'
+                return _disp_trab_imed
+            else: 
+                _disp_trab_imed = 'Não'
+                return _disp_trab_imed
+        
+        else: 
+            raise ValidationError("Opção inválida! Digite s ou n")
+
+
 
 def validar_cpf(numbers):
         #  Obtém os números do CPF e ignora outros caracteres

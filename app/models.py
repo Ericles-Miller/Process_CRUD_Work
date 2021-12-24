@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 
-#,choices=((True, 'Yes'), (False, 'No'))
+disp=(('s','Sim'), ('n','Não'))
 
 # Create your models here.
 class Candidatos(models.Model):
@@ -9,7 +9,7 @@ class Candidatos(models.Model):
     cpf  = models.CharField(max_length = 11, null = False, unique=True, verbose_name='cpf')
     email= models.EmailField(max_length = 100, null = False, unique = True, verbose_name='email')
     pret_salarial = models.FloatField(null=False , verbose_name='Pretenção Salarial')
-    disp_trab_imed= models.BooleanField( null=False, verbose_name='Disponibilidade Imediata de Trabalho')
+    disp_trab_imed= models.CharField(max_length=1, verbose_name='Disponibilidade Imediata de Trabalho', choices=disp)
     idade = models.IntegerField( null= False, verbose_name='idade', validators=[MinValueValidator(18)] ) #verificar se esta certo 
 
     

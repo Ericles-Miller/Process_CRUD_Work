@@ -13,7 +13,6 @@ def inicio(request):
 
 def cadastro(request):
    
-
     if request.method == 'GET':
         user = Candidatos.objects.all()
 
@@ -41,8 +40,6 @@ def cadastro(request):
                 'form2': form2,
             }
             return render(request, 'candidato/cadastro.html', context = context)
-
-
 
 def candidato(request):
     parametro_page = request.GET.get('page', '1')
@@ -79,24 +76,24 @@ def candidato_editar(request, id):
     if request.method == 'GET':
         usuario = Candidatos.objects.all()
         user = Candidatos.objects.filter(id=id).first()
-        formulario = CandidatosForm(instance = user)
+        form = CandidatosForm(instance = user)
         
         context = {
             'users':user,
-            'formulario': formulario,
+            'form': form,
         }
-        return render(request, 'candidato/editar_cadastro.html', {'formulario':formulario})
+        return render(request, 'candidato/editar_cadastro.html', {'form':form})
 
 
     elif request.method == "POST":
         user = Candidatos.objects.filter(id=id).first()
-        formulario = CandidatosForm(request.POST, instance = user)
-        if formulario.is_valid():
-            formulario.save()
+        form = CandidatosForm(request.POST, instance = user)
+        if form.is_valid():
+            form.save()
             return redirect('index_candidato')
         else:
-            formulario = CandidatosForm(instance= user)
-            return render(request, 'candidato/editar_cadastro.html', {'formulario':formulario})
+            form = CandidatosForm(instance= user)
+            return render(request, 'candidato/editar_cadastro.html', {'form':form})
 
 
 def excluir(request, id):
