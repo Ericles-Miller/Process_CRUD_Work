@@ -3,7 +3,7 @@ from django.http import HttpResponse
 # -- import models
 from .models import Candidatos 
 #import forms para cadastro
-from .forms import CandidatosForm, ValidForm
+from .forms import CandidatosForm, ValidForm, AlterNotAccept
 
 #paginacao 
 from django.core.paginator import Paginator
@@ -76,25 +76,32 @@ def candidato_editar(request, id):
     if request.method == 'GET':
         usuario = Candidatos.objects.all()
         user = Candidatos.objects.filter(id=id).first()
+    
+               
+        form2= AlterNotAccept()
         form = CandidatosForm(instance = user)
-        
         context = {
             'users':user,
+            'form2':form2,
             'form': form,
+            
         }
         return render(request, 'candidato/editar_cadastro.html', {'form':form})
 
-
-    elif request.method == "POST":
+    else:
         user = Candidatos.objects.filter(id=id).first()
         form = CandidatosForm(request.POST, instance = user)
-        if form.is_valid():
+        #form2= AlterNotAccept(request.POST, instance = user)
+        
+        form2 = AlterNotAccept()
+
+        if form.is_valid():    
+            form2 = AlterNotAccept()
             form.save()
             return redirect('index_candidato')
-        else:
-            form = CandidatosForm(instance= user)
+        else: 
+            form = CandidatosForm(instance = user)
             return render(request, 'candidato/editar_cadastro.html', {'form':form})
-
 
 def excluir(request, id):
     user = Candidatos.objects.get(id=id)
