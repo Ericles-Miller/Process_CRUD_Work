@@ -201,3 +201,28 @@ class CandidatosListViewTest(TestCase):
         self.assertTrue('is_paginated' in response.context)
         self.assertTrue(response.context['is_paginated'] == True)
         self.assertTrue(len(response.context['author_list']) == 5)
+
+
+# ====================================================================================
+#                                  Test view and forms 
+# ====================================================================================
+
+import uuid
+
+class RenewCandidatoInstancesViewTest(TestCase):
+    def setUp(self):
+        
+        #create a candidato
+        test_candidato1 = Candidatos.objects.create(nome = 'Fulano',email='fulano@gmail.com', cpf='40200214758',
+        pret_salarial='45000', disp_trab_imed='s', idade= 19)
+
+        test_candidato2 = Candidatos.objects.create(nome = 'Ciclano',email='ciclano@gmail.com', cpf='402002546781',
+        pret_salarial='1000', disp_trab_imed='n', idade= 33)
+        # Create genre as a post-step
+        genre_objects_for_candidato = Genre.objects.all()
+        test_candiato.genre.set(genre_objects_for_candidato) # Direct assignment of many-to-many types not allowed.
+        test_candidato.save()
+
+        # listagem candidatos test
+        
+
