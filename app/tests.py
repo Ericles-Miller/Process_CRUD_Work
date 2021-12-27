@@ -33,10 +33,10 @@ class CandidatosModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
-        Candidatos.objects.create(nome ='Big', email='exemplo@server.com')
+        Candidatos.objects.create(nome ='fulano', email='exemplo@server.com')
 
     # ========================================================================
-    #                       TESTEANDO  OS LABELS 
+    #                           TESTEANDO  OS LABELS 
     # ========================================================================
     def test_nome_label(self):
         candidato = Candidatos.objects.get(id=1)
@@ -105,6 +105,99 @@ class CandidatosModelTest(TestCase):
         self.assertEquals(candidato.get_absolute_url(), '/candidato/1')
 
 # =====================================================================================
-#                                   VALIDANDO FORMS 
+#                                   VALIDANDO VIEWS 
 # =====================================================================================
 
+class CandidatosListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create 13 authors for pagination tests
+        number_of_candidatos = 5
+
+        for candidatos_id in range(number_of_candidatos):
+            Candidatos.objects.create(
+                nome =f'Ericles Miller {candidatos_id}',
+                email=f'ericles@gmail.com {candidatos_id}',
+            )
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/app/inicio/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('inicio'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('inicio'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'templates/boasVindas.html')
+
+    #=============================================================================
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/app/cadastro/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('cadastro'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('cadastro'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'templates/candidato/cadastro.html')
+
+    #==============================================================================
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/app/candidatos/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('index_candidato'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('index_candidato'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'templates/candidato/index.html')
+
+    # =============================================================================
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/app/editar/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('editar'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('editar'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'templates/candidato/editar_cadastro.html')
+
+    # ==============================================================================
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/app/excluir/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('excuir'))
+        self.assertEqual(response.status_code, 200)
+
+
+    #================================================================================
+    def test_pagination_is_five(self):
+        response = self.client.get(reverse('candidatos'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(len(response.context['candidatos_list']) == 5)
+
+    def test_lists_all_candidatos(self):
+        # Get second page and confirm it has (exactly) remaining 3 items
+        response = self.client.get(reverse('candidatos')+'?page=2')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(len(response.context['author_list']) == 5)
