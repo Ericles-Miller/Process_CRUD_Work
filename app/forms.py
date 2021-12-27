@@ -49,8 +49,44 @@ class ValidForm(forms.Form):
         else: 
             raise ValidationError("Opção inválida! Digite s ou n")
 
+# =====================================================================================
+# validacao editar cpf 
+#======================================================================================
+
+    
+class AlterNotAccept(forms.Form):
+    nome = forms.CharField(max_length = 100 )
+    cpf  = forms.CharField(max_length = 11)
+    email= forms.EmailField(max_length = 100)
+    pret_salarial = forms.FloatField()
+    disp_trab_imed= forms.CharField(max_length=1)
+    idade = forms.IntegerField(validators=[MinValueValidator(18)] ) 
+
+    def clean_cpf(self):
+        _cpf = self.cleaned_data['cpf']
+        print('--------------')
+        print(_cpf)
+
+        if Candidatos.objects.filter(cpf__exact = _cpf):
+            return _cpf 
+
+        else:
+            raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')
+    
+    def clean_email(self):
+        
+        def clean_email(self):
+            _email = self.cleaned_data['email']
+            if not Candidatos.objects.filter(email=_email):
+                return _email
+            else:
+                raise ValidationError('O email ja foi cadastrado por outro usuário')
 
 
+#==============================================================================================
+# funcao para validar cpf 
+#==============================================================================================
+        
 def validar_cpf(numbers):
         #  Obtém os números do CPF e ignora outros caracteres
     cpf = [int(char) for char in numbers if char.isdigit()]
@@ -73,6 +109,7 @@ def validar_cpf(numbers):
 class CandidatosForm(forms.ModelForm):
     class Meta:
         model = Candidatos
+        db_table = Candidatos
         fields = '__all__'
 
-   
+

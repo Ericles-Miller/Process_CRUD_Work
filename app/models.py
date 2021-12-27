@@ -17,7 +17,7 @@ class Candidatos(models.Model):
     
     
     def __str__(self):
-        return self.nome
+        return  self.nome
         #lista = 'Nome:' + self.nome + "-" + 'cpf:' + self.cpf + '-' + 'email:' + self.email + '-' + 'pretencao salarial:' + self.pret_salarial + '-' + 'disponibilidade de Trabalho' + self.disp_trab_imed +  '-' + 'idade' + self.idade
 
     
