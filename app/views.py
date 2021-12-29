@@ -3,7 +3,7 @@ from django.http import HttpResponse
 # -- import models
 from .models import Candidatos 
 #import forms para cadastro
-from .forms import CandidatosForm, ValidForm, AppForm ,AlterNotAccept,AppForm
+from .forms import CandidatosForm, ValidForm, AppForm, AlterNotAccept
 
 #paginacao 
 from django.core.paginator import Paginator
@@ -21,7 +21,7 @@ def cadastro(request):
     if request.method == 'GET':
         user = Candidatos.objects.all()
         form = ValidForm()
-
+        print(form)
         context = {
             'form': form,
             'user': user,
@@ -79,20 +79,22 @@ def candidato(request):
 # =====================================================================================#
 
 def candidato_editar(request, id):
-    
+            
     template_name = 'candidato/editar_cadastro.html'
     instance = Candidatos.objects.get(id=id)
-    form = CandidatosForm(request.POST or None, instance=instance)
-
+    form = AppForm(request.POST or None, instance=instance)
+    validation = AlterNotAccept(request.POST or None)
     if request.method == 'POST':
+        form = AppForm(request.POST, instance = instance)
         if form.is_valid():
+            validation = AlterNotAccept()   
             form.save()
             return redirect('index_candidato')
 
-    context = {'form': form}
+    context = {'form': form, 'validation': validation}
     return render(request, template_name, context)
 
-
+    
 # =====================================================================================#
 #                                       Excluir                                        #
 # =====================================================================================#
@@ -101,17 +103,4 @@ def excluir(request, id):
     user.delete()
     return redirect('index_candidato')
     #return render(request, 'candidato/index.html')
-
-
-
-def home_view(request):
-    print('aaaaaaaaaaaaaaaaaa')
-    context = {}
-    form = AppForm(request.POST)
-    context['form'] = form
-    if request.POST:
-        if form.is_valid():
-            temp = form.cleaned_data.get("cpf_field")
-            print(temp)
-    return render(request, "candidato/editar_cadastro.html", context)
 
