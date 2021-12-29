@@ -11,9 +11,6 @@ class Candidatos(models.Model):
     pret_salarial = models.FloatField(null=False , verbose_name='Pretenção Salarial')
     disp_trab_imed= models.CharField(max_length=1, verbose_name='Disponibilidade Imediata de Trabalho', choices=disp)
     idade = models.IntegerField( null= False, verbose_name='idade', validators=[MinValueValidator(18)] ) #verificar se esta certo 
-
-    
-    
     
     
     def __str__(self):
