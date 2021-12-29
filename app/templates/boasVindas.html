@@ -3,25 +3,34 @@
 {% block title %} Cadastro Candidatos {% endblock title %} 
 
 {% block content %} 
-
+<div class="pai">
 <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="https://cdn.wizard.com.br/wp-content/uploads/2020/05/06155457/PJ-ou-CLT-qual-o-melhor-regime-de-trabalho.jpg" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <h5 class="card-title">Listar Candidatos</h5>
+      <p class="card-text">Clique aqui para ver a lista de candidados cadastrados.Aqui você pode monitorar os registros.</p>
+      <a href="{% url 'index_candidato' %}" class="btn btn-primary">Lista Candidatos</a>
     </div>
   </div>
 
 
-  <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+  <div class="card" style="width: 18rem; margin-left: 15%;">
+    <img src="https://st2.depositphotos.com/3591429/7713/i/600/depositphotos_77139257-stock-photo-group-of-business-people-in.jpg" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <h5 class="card-title">Cadastro de candidados</h5>
+      <p class="card-text">Clique para participar do processo seletivo de candidatos da Work.Boa sorte!</p>
+      <a href="{% url 'cadastro' %}" class="btn btn-primary">Cadastre</a>
     </div>
   </div>
 
+</div>
 
+
+<style>
+  .pai{
+    display: flex;
+    margin-top: 23%;
+    margin-left: 15%;
+  }
+</style>
 {% endblock content %}

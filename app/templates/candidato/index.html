@@ -20,8 +20,13 @@
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  .pai{
+    display: flex;
+  }
+
   </style>
-  <div class="row">
+  <div class="row" style="margin-top: 3%;">
     <nav aria-label="Navegação de página exemplo">
       <ul class="pagination justify-content-center">
         {% if candidato.has_previous %}
@@ -62,13 +67,14 @@
       </ul>
     </nav>
   </div>
-  
+  <div class="pai">
   <div class="input-group">
       <form action="." method="GET" class="form-inline">
-        <input type="text" id="search" name="search" class="form-control" placeholder="Busca">
-        <input type="submit" class="btn btn-primary" value="OK">
+        <input type="text" id="search" name="search" class="form-control" placeholder="Busca" >
+        <input type="submit" class="btn btn-primary" value="OK" style="margin-top: 1%; margin-bottom: 1%;">
       </form>
   </div>
+</div>
 
 
 <table>

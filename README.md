@@ -375,81 +375,55 @@ Para excluir clique em Excluir
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65bf20ee-8646-41f3-aff4-245f19f7b308/Untitled.png)
 
-## Editar(update) ========== verificar
+## Editar(update)
 
 ```python
+# =====================================================================================#
+#                                       Editar                                         #
+# =====================================================================================#
+
 def candidato_editar(request, id):
-    
-    user = Candidatos.objects.get(id=id)
-    if request.method == 'GET':
-        usuario = Candidatos.objects.all()
-        user = Candidatos.objects.filter(id=id).first()
-    
-               
-        form2= AlterNotAccept()
-        form = CandidatosForm(instance = user)
-        context = {
-            'users':user,
-            'form2':form2,
-            'form': form,
             
-        }
-        return render(request, 'candidato/editar_cadastro.html', {'form':form})
-
-    else:
-        user = Candidatos.objects.filter(id=id).first()
-        form = CandidatosForm(request.POST, instance = user)
-        #form2= AlterNotAccept(request.POST, instance = user)
-        
-        form2 = AlterNotAccept()
-
-        if form.is_valid():    
-            form2 = AlterNotAccept()
+    template_name = 'candidato/editar_cadastro.html'
+    instance = Candidatos.objects.get(id=id)
+    form = AppForm(request.POST or None, instance=instance)
+    validation = AlterNotAcceptForm(request.POST or None)
+    if request.method == 'POST':
+        form = AppForm(request.POST, instance = instance)
+        if form.is_valid():
+            validation = AlterNotAcceptForm()   
             form.save()
             return redirect('index_candidato')
-        else: 
-            form = CandidatosForm(instance = user)
-            return render(request, 'candidato/editar_cadastro.html', {'form':form})
+
+    context = {'form': form, 'validation': validation}
+    return render(request, template_name, context)
 ```
 
 ```python
+
 # =====================================================================================
 # validacao editar cpf 
 #======================================================================================
-
-    
-class AlterNotAccept(forms.Form):
+class AlterNotAcceptForm(forms.Form):
     nome = forms.CharField(max_length = 100 )
-    cpf  = forms.CharField(max_length = 11)
+    cpf  = forms.CharField(max_length = 11, disabled=True)
     email= forms.EmailField(max_length = 100)
     pret_salarial = forms.FloatField()
     disp_trab_imed= forms.CharField(max_length=1)
     idade = forms.IntegerField(validators=[MinValueValidator(18)] ) 
 
-    def clean_cpf(self):
-        _cpf = self.cleaned_data['cpf']
-        print('--------------')
-        print(_cpf)
-
-        if Candidatos.objects.filter(cpf__exact = _cpf):
-            return _cpf 
-
-        else:
-            raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')
-    
-    def clean_email(self):
         
-        def clean_email(self):
-            _email = self.cleaned_data['email']
-            if not Candidatos.objects.filter(email=_email):
-                return _email
-            else:
-                raise ValidationError('O email ja foi cadastrado por outro usuário')
+    def clean_email(self):
+        print('--------------')
+        _email = self.cleaned_data.get['email']
+        if not Candidatos.objects.filter(email=_email):
+            return _email
+        else:
+            raise ValidationError('O email ja foi cadastrado por outro usuário')
 
-class CandidatosForm(forms.ModelForm):
-    class Meta:
+class AppForm(forms.ModelForm):
+   class Meta:
         model = Candidatos
-        db_table = Candidatos
         fields = '__all__'
 ```
 
@@ -473,6 +447,47 @@ urlpatterns = [
 ## Arquivos Templates e Formulários
 
 Dentro da pasta templates foram criados os arquivos para a comunicação com o usuário + API
+
+## BoasVindas.html
+
+O arquivo tem como objetivo ser a página principal da API. Diante disso, nele há dois cards para o uso de cadastro e listagem dos candidatos.
+
+```html
+{% extends 'base.html' %}
+    
+{% block title %} Cadastro Candidatos {% endblock title %} 
+
+{% block content %} 
+<div class="pai">
+<div class="card" style="width: 18rem;">
+    <img src="https://cdn.wizard.com.br/wp-content/uploads/2020/05/06155457/PJ-ou-CLT-qual-o-melhor-regime-de-trabalho.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Listar Candidatos</h5>
+      <p class="card-text">Clique aqui para ver a lista de candidados cadastrados.Aqui você pode monitorar os registros.</p>
+      <a href="{% url 'index_candidato' %}" class="btn btn-primary">Lista Candidatos</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem; margin-left: 15%;">
+    <img src="https://st2.depositphotos.com/3591429/7713/i/600/depositphotos_77139257-stock-photo-group-of-business-people-in.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Cadastro de candidados</h5>
+      <p class="card-text">Clique para participar do processo seletivo de candidatos da Work.Boa sorte!</p>
+      <a href="{% url 'cadastro' %}" class="btn btn-primary">Cadastre</a>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .pai{
+    display: flex;
+    margin-top: 23%;
+    margin-left: 15%;
+  }
+</style>
+{% endblock content %}
+```
 
 ### Base.html
 
@@ -1052,3 +1067,39 @@ class RenewCandidatoInstancesViewTest(TestCase):
         test_candiato.genre.set(genre_objects_for_candidato) # Direct assignment of many-to-many types not allowed.
         test_candidato.save()
 ```
+
+  # Decisão de Designers
+
+Foi pensado em uma forma simples e estilosa para a comunição do usuário com o a aplicação.
+
+## Boas Vindas
+
+A primeira página de boas vinda mostra a tela inicial, em que é apresentada a navbar e dois métodos cadastrar e listar candidatos. Veja abaixo:
+
+ 
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/27ecbd10-54fe-4d93-b317-42139d70cede/Untitled.png)
+
+## Cadastrar Candidato
+
+A página candidato tem como objetivo cadastrar os candidatos. Nela, tem os seguintes campos: nome, cpf ,email, idade, pretensão salarial, disponibilidade imediata de trabalho. 
+
+## Listar Candidatos
+
+A página listar candidatos irá monitorar os candidatos cadastrados. Diante disso, ela terá os métodos de editar e excluir. Veja abaixo:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c86a7396-5375-435d-8eb7-3b44542a1b32/Untitled.png)
+
+Obs: Ao clicar em um dos métodos o api realizará algumas ações. No caso do excluir, o registro selecionado será excluído. Já no editar o site será redirecionado a outra página conforme verá abaixo:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ae55e9d3-a702-4bba-83a3-3b4dbac80f50/Untitled.png)
+
+# Descrevendo a API
+
+Conforme foi apresentado, a API tem como objetivo cadastrar usuários com determinados dados. Dentre eles, alguns necessitam de validações próprias como o email, cpf  e idade. Assim, foram criadas validações personalizadas, por exemplo, idade, ser maior que 18 anos para a realização do cadastro, o email e o cpf serem únicos para um só usuário.
+
+Outro fator importante, está no método listar, em que é possível visualizar todos os usuários cadastrados na aplicação. Com isso, é mostrado a lista de 5 em 5 por página conforme o pedido do processo seletivo. Além disso, temos o campo busca. Nele, pesquisamos os usuários cadastrados pelo campo CPF. 
+
+O método editar tinha como objetivo atualizar os dados de determinados candidatos com exceção do CPF. Assim, teria que ter uma validação particular no campo CPF de não alteração. A validação foi feita, mas não sei por qual motivo não surtiu efeito esperado. 
+
+Concluindo, a aplicação foram feitos testes unitários. A tarefa de criação os testes foi um pouco complexa, mas foi atendida.
