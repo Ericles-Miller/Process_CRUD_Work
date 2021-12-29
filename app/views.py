@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpResponse 
 # -- import models
 from .models import Candidatos 
 #import forms para cadastro
-from .forms import CandidatosForm, ValidForm, AppForm, AlterNotAccept
+from .forms import CandidatosForm, ValidForm, AppForm, AlterNotAcceptForm
 
 #paginacao 
 from django.core.paginator import Paginator
@@ -83,11 +83,11 @@ def candidato_editar(request, id):
     template_name = 'candidato/editar_cadastro.html'
     instance = Candidatos.objects.get(id=id)
     form = AppForm(request.POST or None, instance=instance)
-    validation = AlterNotAccept(request.POST or None)
+    validation = AlterNotAcceptForm(request.POST or None)
     if request.method == 'POST':
         form = AppForm(request.POST, instance = instance)
         if form.is_valid():
-            validation = AlterNotAccept()   
+            validation = AlterNotAcceptForm()   
             form.save()
             return redirect('index_candidato')
 

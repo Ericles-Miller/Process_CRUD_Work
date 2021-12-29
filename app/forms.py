@@ -8,7 +8,7 @@ from django.forms import ValidationError
 #choices_p=((True, 'Sim'), (False, 'Não'))
 
 class ValidForm(forms.Form):
-    nome = forms.CharField(max_length = 100 )
+    nome = forms.CharField(max_length = 100) 
     cpf  = forms.CharField(max_length = 11)
     email= forms.EmailField(max_length = 100)
     pret_salarial = forms.FloatField()
@@ -52,7 +52,7 @@ class ValidForm(forms.Form):
 # =====================================================================================
 # validacao editar cpf 
 #======================================================================================
-class AlterNotAccept(forms.Form):
+class AlterNotAcceptForm(forms.Form):
     nome = forms.CharField(max_length = 100 )
     cpf  = forms.CharField(max_length = 11, disabled=True)
     email= forms.EmailField(max_length = 100)
@@ -60,17 +60,7 @@ class AlterNotAccept(forms.Form):
     disp_trab_imed= forms.CharField(max_length=1)
     idade = forms.IntegerField(validators=[MinValueValidator(18)] ) 
 
-    '''def clean_cpf(self):
-        _cpf = self.cleaned_data['cpf']
-        print('--------------')
-        print(_cpf)
-
-        if Candidatos.objects.filter(cpf = _cpf):
-            return _cpf 
-
-        else:
-            raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')'''
-    
+        
     def clean_email(self):
         print('--------------')
         _email = self.cleaned_data.get['email']

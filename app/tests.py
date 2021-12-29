@@ -87,11 +87,6 @@ class CandidatosModelTest(TestCase):
         max_length = author._meta.get_field('nome').max_length
         self.assertEquals(max_length, 100)
 
-    ''' MUdar depois 
-    def test_pret_salarial_max_length(self):
-        candidato = Candidatos.objects.get(id=1)
-        max_length = author._meta.get_field('pret_salarial').max_length
-        self.assertEquals(max_length, 100)'''
 
     def test_idade_max_length(self):
         candidato = Candidatos.objects.get(id=1)
