@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from random import randint
 from django.forms import ValidationError
 
+
 #choices_p=((True, 'Sim'), (False, 'Não'))
 
 class ValidForm(forms.Form):
@@ -18,11 +19,10 @@ class ValidForm(forms.Form):
         _cpf = self.cleaned_data['cpf']
         
         a = validar_cpf(_cpf)
-
+        
         if a == True:
 
             if not Candidatos.objects.filter(cpf = _cpf):
-                #Candidatos.objects.AlterField(cpf)
                 return _cpf
             else: 
                 raise ValidationError("O cpf inserido é inválido ou já existe!")
@@ -52,11 +52,16 @@ class ValidForm(forms.Form):
 # =====================================================================================
 # validacao editar cpf 
 #======================================================================================
+class AppForm(forms.ModelForm):
+   class Meta:
+        model = Candidatos
+        fields = '__all__'
+        
 
-    
+        
 class AlterNotAccept(forms.Form):
     nome = forms.CharField(max_length = 100 )
-    cpf  = forms.CharField(max_length = 11)
+    cpf  = forms.CharField(max_length = 11, disabled=True)
     email= forms.EmailField(max_length = 100)
     pret_salarial = forms.FloatField()
     disp_trab_imed= forms.CharField(max_length=1)
@@ -67,20 +72,19 @@ class AlterNotAccept(forms.Form):
         print('--------------')
         print(_cpf)
 
-        if Candidatos.objects.filter(cpf__exact = _cpf):
+        if Candidatos.objects.filter(cpf = _cpf):
             return _cpf 
 
         else:
             raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')
     
     def clean_email(self):
-        
-        def clean_email(self):
-            _email = self.cleaned_data['email']
-            if not Candidatos.objects.filter(email=_email):
-                return _email
-            else:
-                raise ValidationError('O email ja foi cadastrado por outro usuário')
+    
+        _email = self.cleaned_data['email']
+        if not Candidatos.objects.filter(email=_email):
+            return _email
+        else:
+            raise ValidationError('O email ja foi cadastrado por outro usuário')
 
 
 #==============================================================================================
@@ -106,10 +110,15 @@ def validar_cpf(numbers):
             return False
     return True
 
+
+
 class CandidatosForm(forms.ModelForm):
     class Meta:
         model = Candidatos
-        db_table = Candidatos
-        fields = '__all__'
+        fields = (
+            'nome','email', 'cpf', 'idade', 'pret_salarial', 'disp_trab_imed'
+        )
 
 
+
+        
