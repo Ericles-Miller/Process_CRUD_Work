@@ -52,13 +52,6 @@ class ValidForm(forms.Form):
 # =====================================================================================
 # validacao editar cpf 
 #======================================================================================
-class AppForm(forms.ModelForm):
-   class Meta:
-        model = Candidatos
-        fields = '__all__'
-        
-
-        
 class AlterNotAccept(forms.Form):
     nome = forms.CharField(max_length = 100 )
     cpf  = forms.CharField(max_length = 11, disabled=True)
@@ -67,7 +60,7 @@ class AlterNotAccept(forms.Form):
     disp_trab_imed= forms.CharField(max_length=1)
     idade = forms.IntegerField(validators=[MinValueValidator(18)] ) 
 
-    def clean_cpf(self):
+    '''def clean_cpf(self):
         _cpf = self.cleaned_data['cpf']
         print('--------------')
         print(_cpf)
@@ -76,16 +69,23 @@ class AlterNotAccept(forms.Form):
             return _cpf 
 
         else:
-            raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')
+            raise ValidationError('O cpf não pode ser alterado uma vez que foi cadastrado. Insira o cpf anterior')'''
     
     def clean_email(self):
-    
-        _email = self.cleaned_data['email']
+        print('--------------')
+        _email = self.cleaned_data.get['email']
         if not Candidatos.objects.filter(email=_email):
             return _email
         else:
             raise ValidationError('O email ja foi cadastrado por outro usuário')
 
+
+class AppForm(forms.ModelForm):
+   class Meta:
+        model = Candidatos
+        fields = '__all__'
+        
+       
 
 #==============================================================================================
 # funcao para validar cpf 
